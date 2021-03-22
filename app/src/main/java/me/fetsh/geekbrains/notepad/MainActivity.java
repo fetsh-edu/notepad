@@ -20,7 +20,7 @@ public class MainActivity extends AppCompatActivity {
         fragmentManager = getSupportFragmentManager();
         if (savedInstanceState == null) {
             fragmentManager.beginTransaction()
-                    .replace(R.id.note_list, new NoteListFragment())
+                    .replace(R.id.main_container, new NoteListFragment())
                     .commit();
         }
         NoteViewModel model = new ViewModelProvider(this).get(NoteViewModel.class);
@@ -36,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
                     .commit();
         } else {
             fragmentManager.beginTransaction()
-                    .replace(R.id.note_list, new NoteFragment())
+                    .replace(R.id.main_container, new NoteFragment())
                     .addToBackStack(null)
                     .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
                     .commit();
