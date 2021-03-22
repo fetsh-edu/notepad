@@ -31,11 +31,17 @@ public class NoteFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         NoteViewModel model = new ViewModelProvider(requireActivity()).get(NoteViewModel.class);
         model.getSelected().observe(getViewLifecycleOwner(), note -> {
-            TextView tv = ((TextView) view.findViewById(R.id.fragment_note_id));
+            TextView noteContent = ((TextView) view.findViewById(R.id.fragment_note_content));
+            TextView noteTitle = ((TextView) view.findViewById(R.id.fragment_note_title));
+            TextView noteDate = ((TextView) view.findViewById(R.id.fragment_note_date));
+
+
             if (note == null) {
-                tv.setText("No note selected");
+                noteContent.setText("No note selected");
             } else {
-                tv.setText(note.getDescription());
+                noteContent.setText(note.getDescription());
+                noteTitle.setText(note.getTitle());
+                noteDate.setText(note.getDateTime().toString());
             }
         });
     }

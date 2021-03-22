@@ -15,7 +15,6 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import me.fetsh.geekbrains.notepad.Note;
 import me.fetsh.geekbrains.notepad.R;
 
 
@@ -41,7 +40,7 @@ public class NoteListFragment extends Fragment {
         initList(view);
     }
 
-    private void selectNote(Note note) {
+    private void updateFragments() {
         FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
         if (isLandscape()) {
             fragmentManager.beginTransaction()
@@ -65,7 +64,7 @@ public class NoteListFragment extends Fragment {
         model.getNotes().observe(getViewLifecycleOwner(), (mAdapter::setNotes));
         mAdapter.setOnItemClickListener((position, note) -> {
             model.select(note);
-            selectNote(note);
+            updateFragments();
         });
         rvNotes.setAdapter(mAdapter);
         rvNotes.setLayoutManager(new LinearLayoutManager(view.getContext()));
