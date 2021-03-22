@@ -1,16 +1,17 @@
-package me.fetsh.geekbrains.notepad;
+package me.fetsh.geekbrains.notepad.ui.notes;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import androidx.fragment.app.Fragment;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+
+import me.fetsh.geekbrains.notepad.R;
 
 public class NoteFragment extends Fragment {
 

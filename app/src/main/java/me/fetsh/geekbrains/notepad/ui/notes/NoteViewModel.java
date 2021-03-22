@@ -1,4 +1,4 @@
-package me.fetsh.geekbrains.notepad;
+package me.fetsh.geekbrains.notepad.ui.notes;
 
 import android.util.Log;
 
@@ -7,6 +7,8 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import java.util.List;
+
+import me.fetsh.geekbrains.notepad.Note;
 
 public class NoteViewModel extends ViewModel {
     private final MutableLiveData<Note> selected = new MutableLiveData<>();
