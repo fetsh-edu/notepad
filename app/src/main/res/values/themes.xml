@@ -22,4 +22,8 @@
     <style name="Theme.Notepad.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="Theme.Notepad.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+    <style name="Theme.Notepad.NoteList">
+        <item name="android:background">@color/lightestGray</item>
+    </style>
+
 </resources>

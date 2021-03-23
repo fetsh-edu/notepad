@@ -3,8 +3,6 @@ package me.fetsh.geekbrains.notepad.ui.notes;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -35,12 +33,12 @@ public class NoteListFragment extends Fragment {
         setHasOptionsMenu(true);
     }
 
-    @Override
-    public void onPrepareOptionsMenu(Menu menu) {
-        MenuItem search = menu.findItem(R.id.action_search);
-        search.setVisible(true);
-        super.onPrepareOptionsMenu(menu);
-    }
+//    @Override
+//    public void onPrepareOptionsMenu(Menu menu) {
+//        menu.findItem(R.id.action_share).setVisible(false);
+//        menu.findItem(R.id.action_search).setVisible(true);
+//        super.onPrepareOptionsMenu(menu);
+//    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

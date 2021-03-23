@@ -13,4 +13,10 @@
         android:title="@string/search"
         app:actionViewClass="androidx.appcompat.widget.SearchView"
         app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/action_share"
+        android:icon="@drawable/baseline_share_white"
+        android:orderInCategory="5"
+        android:title="@string/share"
+        app:showAsAction="ifRoom" />
 </menu>

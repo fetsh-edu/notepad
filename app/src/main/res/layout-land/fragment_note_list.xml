@@ -7,14 +7,11 @@
     android:layout_width="match_parent">
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/note_list"
+        style="@style/Theme.Notepad.NoteList"
         android:orientation="vertical"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="1"/>
-    <View
-        android:layout_width="1dp"
-        android:background="#D1D1D1"
-        android:layout_height="match_parent"/>
     <FrameLayout
         android:id="@+id/note_detail"
         android:layout_width="0px"

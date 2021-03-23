@@ -1,8 +1,10 @@
 package me.fetsh.geekbrains.notepad;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -57,8 +59,14 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main, menu);
+
         MenuItem search = menu.findItem(R.id.action_search);
-        search.setVisible(false);
+        MenuItem share = menu.findItem(R.id.action_share);
+
+        search.setVisible(noteListIsVisible());
+        share.setVisible(noteIsVisible());
+        Log.e("note", "options menu");
+
         SearchView searchText = (SearchView) search.getActionView();
         searchText.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
@@ -73,6 +81,17 @@ public class MainActivity extends AppCompatActivity {
         });
 
         return true;
+    }
+
+    private boolean noteIsVisible() {
+        return findViewById(R.id.fragment_note_date) != null;
+    }
+
+    private boolean noteListIsVisible() {
+        View noteList = findViewById(R.id.note_list);
+        View noteSidebar = findViewById(R.id.note_detail);
+        View noteSingle = findViewById(R.id.note);
+        return (noteList != null && noteSidebar != null) || (noteList != null && noteSingle == null);
     }
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
