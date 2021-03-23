@@ -10,12 +10,13 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import me.fetsh.geekbrains.notepad.R;
+
+import static androidx.navigation.fragment.NavHostFragment.findNavController;
 
 
 public class NoteListFragment extends Fragment {
@@ -60,11 +61,7 @@ public class NoteListFragment extends Fragment {
                     .replace(R.id.note_detail, new NoteFragment())
                     .commit();
         } else {
-            fragmentManager.beginTransaction()
-                    .replace(R.id.notes_container, new NoteFragment())
-                    .addToBackStack(null)
-                    .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
-                    .commit();
+            findNavController(this).navigate(R.id.action_list_to_note);
         }
     }
 

@@ -9,11 +9,26 @@
         android:id="@+id/nav_home"
         android:name="me.fetsh.geekbrains.notepad.ui.notes.NoteListFragment"
         android:label="@string/menu_home"
-        tools:layout="@layout/fragment_note_list" />
+        tools:layout="@layout/fragment_note_list">
+        <action android:id="@+id/action_list_to_note"
+            app:destination="@id/nav_note"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim"/>
+    </fragment>
 
     <fragment
         android:id="@+id/nav_about"
         android:name="me.fetsh.geekbrains.notepad.ui.about.AboutFragment"
         android:label="@string/menu_gallery"
         tools:layout="@layout/fragment_about" />
+
+    <fragment
+        android:id="@+id/nav_note"
+        android:name="me.fetsh.geekbrains.notepad.ui.notes.NoteFragment"
+        tools:layout="@layout/fragment_note" >
+    </fragment>
+
+
 </navigation>

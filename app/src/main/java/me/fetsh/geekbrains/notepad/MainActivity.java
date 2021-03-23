@@ -38,6 +38,8 @@ public class MainActivity extends AppCompatActivity {
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         FloatingActionButton fab = findViewById(R.id.fab);
 
         fab.setOnClickListener(view -> Snackbar.make(view, "Create note", Snackbar.LENGTH_LONG)
