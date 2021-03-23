@@ -2,6 +2,8 @@ package me.fetsh.geekbrains.notepad.ui.notes;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -17,6 +19,20 @@ public class NoteFragment extends Fragment {
 
     public NoteFragment() {
         // Required empty public constructor
+    }
+
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
+    }
+
+    @Override
+    public void onPrepareOptionsMenu(Menu menu) {
+        MenuItem search = menu.findItem(R.id.action_search);
+        search.setVisible(false);
+        super.onPrepareOptionsMenu(menu);
     }
 
     @Nullable

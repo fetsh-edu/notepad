@@ -22,8 +22,14 @@ public class Note implements Parcelable {
     public static List<Note> all = List.of(
             new Note("note 3", "Some text", LocalDateTime.now()),
             new Note("note 2", "Some description", LocalDateTime.now().minusHours(2)),
-            new Note("note 1", "Some other description", LocalDateTime.now().minusDays(2)),
-            new Note("note 0", "Ok, Hello World!", LocalDateTime.now().minusDays(4))
+            new Note("note 0", "A material metaphor is the unifying theory of a rationalized space and a system of motion." +
+                    "The material is grounded in tactile reality, inspired by the study of paper and ink, yet " +
+                    "technologically advanced and open to imagination and magic.\n" +
+                    "Surfaces and edges of the material provide visual cues that are grounded in reality. The " +
+                    "use of familiar tactile attributes helps users quickly understand affordances. Yet the " +
+                    "flexibility of the material creates new affordances that supercede those in the physical " +
+                    "world, without breaking the rules of physics.\n", LocalDateTime.now().minusDays(4)),
+            new Note("note 1", "Some other description", LocalDateTime.now().minusDays(2))
 
     );
 
