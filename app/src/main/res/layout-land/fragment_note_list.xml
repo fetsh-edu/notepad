@@ -12,7 +12,8 @@
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="1"/>
-    <FrameLayout
+    <androidx.fragment.app.FragmentContainerView
+        android:name="me.fetsh.geekbrains.notepad.ui.notes.NoteFragment"
         android:id="@+id/note_detail"
         android:layout_width="0px"
         android:layout_height="match_parent"

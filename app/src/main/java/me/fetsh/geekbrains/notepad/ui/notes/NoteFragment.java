@@ -26,13 +26,6 @@ public class NoteFragment extends Fragment {
         setHasOptionsMenu(true);
     }
 
-//    @Override
-//    public void onPrepareOptionsMenu(Menu menu) {
-//        menu.findItem(R.id.action_share).setVisible(true);
-//        menu.findItem(R.id.action_search).setVisible(false);
-//        super.onPrepareOptionsMenu(menu);
-//    }
-
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -45,13 +38,14 @@ public class NoteFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         NoteViewModel model = new ViewModelProvider(requireActivity()).get(NoteViewModel.class);
         model.getSelected().observe(getViewLifecycleOwner(), note -> {
-            TextView noteContent = ((TextView) view.findViewById(R.id.fragment_note_content));
-            TextView noteTitle = ((TextView) view.findViewById(R.id.fragment_note_title));
-            TextView noteDate = ((TextView) view.findViewById(R.id.fragment_note_date));
-
+            TextView noteContent = view.findViewById(R.id.fragment_note_content);
+            TextView noteTitle = view.findViewById(R.id.fragment_note_title);
+            TextView noteDate = view.findViewById(R.id.fragment_note_date);
 
             if (note == null) {
-                noteContent.setText("No note selected");
+                noteContent.setText(R.string.empty_note);
+                noteDate.setText("");
+                noteTitle.setText("");
             } else {
                 noteContent.setText(note.getDescription());
                 noteTitle.setText(note.getTitle());

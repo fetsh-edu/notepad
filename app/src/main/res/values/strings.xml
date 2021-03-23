@@ -102,4 +102,6 @@
     </string>
     <string name="search">Search</string>
     <string name="share">Share</string>
+    <string name="empty_note">No note selected</string>
+    <string name="note">Note</string>
 </resources>

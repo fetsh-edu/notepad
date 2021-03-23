@@ -9,7 +9,6 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -21,7 +20,7 @@ import static androidx.navigation.fragment.NavHostFragment.findNavController;
 
 public class NoteListFragment extends Fragment {
 
-    private NoteViewModel model;
+    private NoteViewModel mNoteViewModel;
     private final NotesAdapter mAdapter = new NotesAdapter();
 
     public NoteListFragment() {
@@ -34,13 +33,6 @@ public class NoteListFragment extends Fragment {
         setHasOptionsMenu(true);
     }
 
-//    @Override
-//    public void onPrepareOptionsMenu(Menu menu) {
-//        menu.findItem(R.id.action_share).setVisible(false);
-//        menu.findItem(R.id.action_search).setVisible(true);
-//        super.onPrepareOptionsMenu(menu);
-//    }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -50,19 +42,12 @@ public class NoteListFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        model = new ViewModelProvider(requireActivity()).get(NoteViewModel.class);
+        mNoteViewModel = new ViewModelProvider(requireActivity()).get(NoteViewModel.class);
         initList(view);
     }
 
     private void updateFragments() {
-        FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
-        if (isLandscape()) {
-            fragmentManager.beginTransaction()
-                    .replace(R.id.note_detail, new NoteFragment())
-                    .commit();
-        } else {
-            findNavController(this).navigate(R.id.action_list_to_note);
-        }
+        if (!isLandscape()) findNavController(this).navigate(R.id.action_list_to_note);
     }
 
     private boolean isLandscape() {
@@ -71,9 +56,9 @@ public class NoteListFragment extends Fragment {
 
     private void initList(View view) {
         RecyclerView rvNotes = view.findViewById(R.id.note_list);
-        model.getNotes().observe(getViewLifecycleOwner(), (mAdapter::setNotes));
+        mNoteViewModel.getNotes().observe(getViewLifecycleOwner(), (mAdapter::setNotes));
         mAdapter.setOnItemClickListener((position, note) -> {
-            model.select(note);
+            mNoteViewModel.select(note);
             updateFragments();
         });
         rvNotes.setAdapter(mAdapter);

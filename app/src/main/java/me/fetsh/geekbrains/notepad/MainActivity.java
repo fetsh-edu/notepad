@@ -1,7 +1,6 @@
 package me.fetsh.geekbrains.notepad;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -13,6 +12,7 @@ import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.FragmentManager;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
@@ -23,10 +23,14 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
 
+import me.fetsh.geekbrains.notepad.ui.notes.NoteViewModel;
+
 public class MainActivity extends AppCompatActivity {
 
     private FragmentManager fragmentManager;
     private AppBarConfiguration mAppBarConfiguration;
+    private NoteViewModel mNoteViewModel;
+    private NavController mNavController;
 
 
     @Override
@@ -35,6 +39,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         fragmentManager = getSupportFragmentManager();
+        mNoteViewModel = new ViewModelProvider(this).get(NoteViewModel.class);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -53,9 +58,13 @@ public class MainActivity extends AppCompatActivity {
                 .build();
 
         NavHostFragment navHostFragment = (NavHostFragment) fragmentManager.findFragmentById(R.id.nav_host_fragment);
-        NavController navController = navHostFragment.getNavController();
-        NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
-        NavigationUI.setupWithNavController(navigationView, navController);
+        mNavController = navHostFragment.getNavController();
+        mNavController.addOnDestinationChangedListener((controller, destination, bundle) -> {
+            if (destination.getId() == R.id.nav_home) mNoteViewModel.select(null);
+        });
+
+        NavigationUI.setupActionBarWithNavController(this, mNavController, mAppBarConfiguration);
+        NavigationUI.setupWithNavController(navigationView, mNavController);
     }
 
     @Override
@@ -67,7 +76,6 @@ public class MainActivity extends AppCompatActivity {
 
         search.setVisible(noteListIsVisible());
         share.setVisible(noteIsVisible());
-        Log.e("note", "options menu");
 
         SearchView searchText = (SearchView) search.getActionView();
         searchText.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -90,10 +98,14 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private boolean noteListIsVisible() {
-        View noteList = findViewById(R.id.note_list);
-        View noteSidebar = findViewById(R.id.note_detail);
-        View noteSingle = findViewById(R.id.note);
-        return (noteList != null && noteSidebar != null) || (noteList != null && noteSingle == null);
+        if (mNavController.getCurrentDestination() != null) {
+            return (mNavController.getCurrentDestination().getId() == R.id.nav_home);
+        } else {
+            View noteList = findViewById(R.id.note_list);
+            View noteSidebar = findViewById(R.id.note_detail);
+            View noteSingle = findViewById(R.id.note);
+            return (noteList != null && noteSidebar != null) || (noteList != null && noteSingle == null);
+        }
     }
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
