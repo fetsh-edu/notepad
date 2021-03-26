@@ -43,6 +43,9 @@ public class NoteListFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         mNoteViewModel = new ViewModelProvider(requireActivity()).get(NoteViewModel.class);
+        mNoteViewModel.getSelected().observe(getViewLifecycleOwner(), note -> {
+
+        });
         initList(view);
     }
 
@@ -57,7 +60,10 @@ public class NoteListFragment extends Fragment {
     private void initList(View view) {
         RecyclerView rvNotes = view.findViewById(R.id.note_list);
         mNoteViewModel.getNotes().observe(getViewLifecycleOwner(), (mAdapter::setNotes));
-        mAdapter.setOnItemClickListener((position, note) -> {
+        mNoteViewModel.getSelected().observe(getViewLifecycleOwner(), note -> {
+            mAdapter.setSelectedNoteId(note.getId());
+        });
+        mAdapter.setOnNoteClickListener((position, note) -> {
             mNoteViewModel.select(note);
             updateFragments();
         });

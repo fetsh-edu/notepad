@@ -53,15 +53,15 @@ public class MainActivity extends AppCompatActivity {
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
         mAppBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.nav_home, R.id.nav_about)
+                R.id.nav_notes, R.id.nav_about)
                 .setOpenableLayout(drawer)
                 .build();
 
         NavHostFragment navHostFragment = (NavHostFragment) fragmentManager.findFragmentById(R.id.nav_host_fragment);
         mNavController = navHostFragment.getNavController();
         mNavController.addOnDestinationChangedListener((controller, destination, bundle) -> {
-            if (destination.getId() == R.id.nav_home) {
-                mNoteViewModel.select(null);
+            if (destination.getId() == R.id.nav_notes) {
+//                mNoteViewModel.select(null);
                 fab.show();
             } else {
                 fab.hide();
@@ -104,7 +104,7 @@ public class MainActivity extends AppCompatActivity {
 
     private boolean noteListIsVisible() {
         if (mNavController.getCurrentDestination() != null) {
-            return (mNavController.getCurrentDestination().getId() == R.id.nav_home);
+            return (mNavController.getCurrentDestination().getId() == R.id.nav_notes);
         } else {
             View noteList = findViewById(R.id.note_list);
             View noteSidebar = findViewById(R.id.note_detail);
