@@ -24,6 +24,8 @@
     <style name="Theme.Notepad.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
     <style name="Theme.Notepad.NoteList">
         <item name="android:background">@color/lightestGray</item>
+        <item name="android:paddingTop">@dimen/note_list_padding</item>
+        <item name="android:paddingBottom">@dimen/note_list_padding</item>
     </style>
 
 </resources>
