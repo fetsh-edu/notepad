@@ -60,7 +60,12 @@ public class MainActivity extends AppCompatActivity {
         NavHostFragment navHostFragment = (NavHostFragment) fragmentManager.findFragmentById(R.id.nav_host_fragment);
         mNavController = navHostFragment.getNavController();
         mNavController.addOnDestinationChangedListener((controller, destination, bundle) -> {
-            if (destination.getId() == R.id.nav_home) mNoteViewModel.select(null);
+            if (destination.getId() == R.id.nav_home) {
+                mNoteViewModel.select(null);
+                fab.show();
+            } else {
+                fab.hide();
+            }
         });
 
         NavigationUI.setupActionBarWithNavController(this, mNavController, mAppBarConfiguration);
