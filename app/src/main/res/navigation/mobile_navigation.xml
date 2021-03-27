@@ -16,6 +16,12 @@
             app:exitAnim="@anim/nav_default_exit_anim"
             app:popEnterAnim="@anim/nav_default_pop_enter_anim"
             app:popExitAnim="@anim/nav_default_pop_exit_anim"/>
+        <action android:id="@+id/action_list_to_edit"
+            app:destination="@id/nav_edit_note"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim"/>
     </fragment>
 
     <fragment
@@ -29,6 +35,23 @@
         android:label="@string/note"
         android:name="me.fetsh.geekbrains.notepad.ui.notes.NoteFragment"
         tools:layout="@layout/fragment_note" >
+        <action android:id="@+id/action_note_to_edit"
+            app:destination="@id/nav_edit_note"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_edit_note"
+        android:label="@string/note"
+        android:name="me.fetsh.geekbrains.notepad.ui.notes.NoteEditFragment"
+        tools:layout="@layout/fragment_note" >
+        <argument
+            android:name="noteId"
+            app:argType="integer"
+            android:defaultValue="-1" />
     </fragment>
 
 

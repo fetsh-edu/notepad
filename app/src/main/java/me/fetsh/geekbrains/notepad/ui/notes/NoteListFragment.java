@@ -2,7 +2,9 @@ package me.fetsh.geekbrains.notepad.ui.notes;
 
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -43,9 +45,6 @@ public class NoteListFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         mNoteViewModel = new ViewModelProvider(requireActivity()).get(NoteViewModel.class);
-        mNoteViewModel.getSelected().observe(getViewLifecycleOwner(), note -> {
-
-        });
         initList(view);
     }
 
@@ -59,15 +58,53 @@ public class NoteListFragment extends Fragment {
 
     private void initList(View view) {
         RecyclerView rvNotes = view.findViewById(R.id.note_list);
-        mNoteViewModel.getNotes().observe(getViewLifecycleOwner(), (mAdapter::setNotes));
-        mNoteViewModel.getSelected().observe(getViewLifecycleOwner(), note -> {
-            mAdapter.setSelectedNoteId(note.getId());
+        mAdapter.setNotes(mNoteViewModel.getNotes().getValue().getList());
+
+        mNoteViewModel.getNotes().observe(getViewLifecycleOwner(), notes -> {
+            notes.applyChange(mAdapter);
         });
+
+        mAdapter.setFragment(this);
         mAdapter.setOnNoteClickListener((position, note) -> {
-            mNoteViewModel.select(note);
+            mNoteViewModel.setNoteToShow(note);
             updateFragments();
+        });
+        mAdapter.setOnNoteLongClickListener((position, note) -> {
+            mNoteViewModel.setNoteToEdit(note);
         });
         rvNotes.setAdapter(mAdapter);
         rvNotes.setLayoutManager(new LinearLayoutManager(view.getContext()));
     }
+
+    @Override
+    public void onCreateContextMenu(@NonNull ContextMenu menu, @NonNull View v, @Nullable ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+        requireActivity().getMenuInflater().inflate(R.menu.note_list_item_menu, menu);
+    }
+
+    @Override
+    public boolean onContextItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == R.id.action_edit) {
+            if (mNoteViewModel.getNoteToEdit().getValue() != null) {
+                Bundle bundle = new Bundle();
+                bundle.putInt(NoteEditFragment.NOTE_ID, mNoteViewModel.getNoteToEdit().getValue().getId());
+                findNavController(this).navigate(R.id.action_list_to_edit, bundle);
+                mNoteViewModel.setNoteToEdit(null);
+                return true;
+            } else {
+                return false;
+            }
+        } else if (item.getItemId() == R.id.action_delete) {
+            if (mNoteViewModel.getNoteToEdit().getValue() != null) {
+                mNoteViewModel.getNotes().removeItem(mNoteViewModel.getNoteToEdit().getValue());
+                mNoteViewModel.setNoteToEdit(null);
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            return super.onContextItemSelected(item);
+        }
+    }
+
 }

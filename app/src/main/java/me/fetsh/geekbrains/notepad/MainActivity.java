@@ -21,7 +21,6 @@ import androidx.navigation.ui.NavigationUI;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
-import com.google.android.material.snackbar.Snackbar;
 
 import me.fetsh.geekbrains.notepad.ui.notes.NoteViewModel;
 
@@ -47,13 +46,10 @@ public class MainActivity extends AppCompatActivity {
 
         FloatingActionButton fab = findViewById(R.id.fab);
 
-        fab.setOnClickListener(view -> Snackbar.make(view, "Create note", Snackbar.LENGTH_LONG)
-                .setAction("Action", null).show());
-
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
         mAppBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.nav_notes, R.id.nav_about)
+        R.id.nav_notes, R.id.nav_about)
                 .setOpenableLayout(drawer)
                 .build();
 
@@ -70,6 +66,8 @@ public class MainActivity extends AppCompatActivity {
 
         NavigationUI.setupActionBarWithNavController(this, mNavController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, mNavController);
+
+        fab.setOnClickListener(view -> mNavController.navigate(R.id.action_list_to_edit));
     }
 
     @Override
@@ -78,9 +76,14 @@ public class MainActivity extends AppCompatActivity {
 
         MenuItem search = menu.findItem(R.id.action_search);
         MenuItem share = menu.findItem(R.id.action_share);
+        MenuItem save = menu.findItem(R.id.action_save);
+        MenuItem edit = menu.findItem(R.id.action_edit);
+
 
         search.setVisible(noteListIsVisible());
         share.setVisible(noteIsVisible());
+        edit.setVisible(noteIsVisible());
+        save.setVisible(editNoteFragmentIsVisible());
 
         SearchView searchText = (SearchView) search.getActionView();
         searchText.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -100,6 +103,11 @@ public class MainActivity extends AppCompatActivity {
 
     private boolean noteIsVisible() {
         return findViewById(R.id.fragment_note_date) != null;
+    }
+
+    private boolean editNoteFragmentIsVisible() {
+        if (mNavController.getCurrentDestination() == null) return false;
+        return (mNavController.getCurrentDestination().getId() == R.id.nav_edit_note);
     }
 
     private boolean noteListIsVisible() {

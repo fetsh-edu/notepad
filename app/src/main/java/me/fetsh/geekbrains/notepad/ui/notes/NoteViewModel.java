@@ -1,36 +1,45 @@
 package me.fetsh.geekbrains.notepad.ui.notes;
 
-import android.util.Log;
-
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import java.util.List;
-
+import me.fetsh.geekbrains.notepad.ListLiveData;
 import me.fetsh.geekbrains.notepad.Note;
 
 public class NoteViewModel extends ViewModel {
-    private final MutableLiveData<Note> selected = new MutableLiveData<>();
-    private MutableLiveData<List<Note>> notes;
+    private final MutableLiveData<Note> noteToShow = new MutableLiveData<>();
+    private final MutableLiveData<Note> noteToEdit = new MutableLiveData<>();
+    private ListLiveData<Note> notes;
 
-    public LiveData<List<Note>> getNotes() {
+    public ListLiveData<Note> getNotes() {
         if (notes == null) {
-            notes = new MutableLiveData<>();
-            notes.setValue(Note.all);
+            notes = new ListLiveData<>(null);
+            notes.populate(Note.all);
         }
         return notes;
     }
-    public void select(Note note) {
-        if (note != null) {
-            Log.e("Note", "note selected " + note.getId());
-        } else {
-            Log.e("Note", "note selected " + "null");
-        }
-        selected.setValue(note);
+
+    public void setNoteToShow(Note note) {
+        noteToShow.setValue(note);
     }
 
-    public LiveData<Note> getSelected() {
-        return selected;
+    public void setNoteToEdit(Note note) {
+        noteToEdit.setValue(note);
     }
+
+    public LiveData<Note> getNoteToShow() {
+        return noteToShow;
+    }
+
+    public LiveData<Note> getNoteToEdit() {
+        return noteToEdit;
+    }
+
+    public Note getNote(int id) {
+        if (getNotes().getValue() == null) return null;
+        return getNotes().getValue().getList().stream().filter(n -> n.getId() == id).findFirst().orElse(null);
+    }
+
+
 }

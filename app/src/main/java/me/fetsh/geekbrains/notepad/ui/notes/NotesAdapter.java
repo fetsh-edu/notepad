@@ -15,26 +15,32 @@ import me.fetsh.geekbrains.notepad.R;
 
 public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder> {
 
-    private int selectedPos = RecyclerView.NO_POSITION;
-    private int selectedNoteId = -1;
+    private NoteListFragment mFragment;
+
+    public void setFragment(NoteListFragment noteListFragment) {
+        mFragment = noteListFragment;
+    }
 
     public interface OnNoteClickListener {
-
         void onNoteClicked(int position, Note note);
+    }
+    public interface OnNoteLongClickListener {
+        void onNoteLongClicked(int position, Note note);
     }
     private List<Note> mNotes;
 
     private OnNoteClickListener onNoteClickListener;
+    private OnNoteLongClickListener onNoteLongClickListener;
 
     public void setNotes(List<Note> notes) {
         this.mNotes = notes;
     }
 
-    public void setSelectedNoteId(int selectedNoteId) {
-        this.selectedNoteId = selectedNoteId;
-    }
     public void setOnNoteClickListener(OnNoteClickListener listener) {
         onNoteClickListener = listener;
+    }
+    public void setOnNoteLongClickListener(OnNoteLongClickListener listener) {
+        onNoteLongClickListener = listener;
     }
 
     @NonNull
@@ -49,8 +55,6 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder> 
         Note note = mNotes.get(position);
         holder.itemTitle.setText(note.getTitle());
         holder.itemDescription.setText(note.getDescription());
-        if (note.getId() == selectedNoteId) selectedPos = position;
-        holder.itemView.findViewById(R.id.note_selected).setVisibility(selectedPos == position ? View.VISIBLE : View.GONE);
 
     }
 
@@ -65,12 +69,20 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder> 
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
+
             itemTitle = itemView.findViewById(R.id.note_list_item_title);
             itemDescription = itemView.findViewById(R.id.note_list_item_description);
+            if (mFragment != null) {
+                mFragment.registerForContextMenu(itemView);
+            }
+            itemView.setOnLongClickListener((v) -> {
+                if (onNoteLongClickListener != null) {
+                    onNoteLongClickListener.onNoteLongClicked(getAdapterPosition(), mNotes.get(getAdapterPosition()));
+                }
+                return false;
+            });
+
             itemView.setOnClickListener(v -> {
-                notifyItemChanged(selectedPos);
-                selectedPos = getAdapterPosition();
-                notifyItemChanged(selectedPos);
                 if (onNoteClickListener != null)
                     onNoteClickListener.onNoteClicked(getAdapterPosition(), mNotes.get(getAdapterPosition()));
             });

@@ -104,4 +104,9 @@
     <string name="share">Share</string>
     <string name="empty_note">No note selected</string>
     <string name="note">Note</string>
+    <string name="edit">Edit</string>
+    <string name="delete">Delete</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="save">Save</string>
 </resources>

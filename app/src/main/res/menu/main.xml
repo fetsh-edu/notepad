@@ -19,4 +19,16 @@
         android:orderInCategory="5"
         android:title="@string/share"
         app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/action_save"
+        android:icon="@drawable/baseline_save_white"
+        android:orderInCategory="5"
+        android:title="@string/save"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/action_edit"
+        android:icon="@drawable/baseline_mode_white"
+        android:orderInCategory="5"
+        android:title="@string/edit"
+        app:showAsAction="ifRoom" />
 </menu>
