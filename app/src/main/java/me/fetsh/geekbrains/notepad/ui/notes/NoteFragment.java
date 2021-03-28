@@ -13,6 +13,10 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+
 import me.fetsh.geekbrains.notepad.Note;
 import me.fetsh.geekbrains.notepad.R;
 
@@ -58,7 +62,10 @@ public class NoteFragment extends Fragment {
             } else {
                 noteContent.setText(note.getDescription());
                 noteTitle.setText(note.getTitle());
-                noteDate.setText(note.getDateTime().toString());
+                LocalDateTime dateTime =
+                        LocalDateTime.ofInstant(Instant.ofEpochMilli(note.getDateTime()),
+                                ZoneId.systemDefault());
+                noteDate.setText(dateTime.toString());
             }
         });
     }
@@ -69,7 +76,7 @@ public class NoteFragment extends Fragment {
             if (note == null) return false;
             int actionId = getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE ? R.id.action_list_to_edit : R.id.action_note_to_edit;
             Bundle bundle = new Bundle();
-            bundle.putInt(NoteEditFragment.NOTE_ID, note.getId());
+            bundle.putString(NoteEditFragment.NOTE_ID, note.getId());
             findNavController(this).navigate(actionId, bundle);
             return true;
         }

@@ -61,6 +61,7 @@ public class NoteListFragment extends Fragment {
         mAdapter.setNotes(mNoteViewModel.getNotes().getValue().getList());
 
         mNoteViewModel.getNotes().observe(getViewLifecycleOwner(), notes -> {
+            android.util.Log.e("Note", "notes changed: " + notes.getList().toString() );
             notes.applyChange(mAdapter);
         });
 
@@ -87,7 +88,7 @@ public class NoteListFragment extends Fragment {
         if (item.getItemId() == R.id.action_edit) {
             if (mNoteViewModel.getNoteToEdit().getValue() != null) {
                 Bundle bundle = new Bundle();
-                bundle.putInt(NoteEditFragment.NOTE_ID, mNoteViewModel.getNoteToEdit().getValue().getId());
+                bundle.putString(NoteEditFragment.NOTE_ID, mNoteViewModel.getNoteToEdit().getValue().getId());
                 findNavController(this).navigate(R.id.action_list_to_edit, bundle);
                 mNoteViewModel.setNoteToEdit(null);
                 return true;
@@ -96,7 +97,7 @@ public class NoteListFragment extends Fragment {
             }
         } else if (item.getItemId() == R.id.action_delete) {
             if (mNoteViewModel.getNoteToEdit().getValue() != null) {
-                mNoteViewModel.getNotes().removeItem(mNoteViewModel.getNoteToEdit().getValue());
+                mNoteViewModel.deleteNote(mNoteViewModel.getNoteToEdit().getValue());
                 mNoteViewModel.setNoteToEdit(null);
                 return true;
             } else {

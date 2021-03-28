@@ -14,8 +14,6 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
-import java.time.LocalDateTime;
-
 import me.fetsh.geekbrains.notepad.Note;
 import me.fetsh.geekbrains.notepad.R;
 
@@ -55,7 +53,7 @@ public class NoteEditFragment extends Fragment {
             note = mNoteViewModel.getNote(getArguments().getString(NOTE_ID));
         }
         if (note == null) {
-            note = new Note("", "", LocalDateTime.now());
+            note = new Note("", "", System.currentTimeMillis());
         }
         etTitle = view.findViewById(R.id.fragment_note_edit_title);
         etTitle.setText(note.getTitle());
@@ -71,7 +69,7 @@ public class NoteEditFragment extends Fragment {
             mNoteViewModel.setNoteToShow(note);
             note.setTitle(etTitle.getText().toString());
             note.setDescription(etContent.getText().toString());
-            mNoteViewModel.getNotes().setOrAddItem(note);
+            mNoteViewModel.saveNote(note);
             findNavController(this).navigateUp();
             return true;
         }

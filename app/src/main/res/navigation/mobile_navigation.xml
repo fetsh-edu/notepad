@@ -50,7 +50,7 @@
         tools:layout="@layout/fragment_note" >
         <argument
             android:name="noteId"
-            app:argType="integer"
+            app:argType="string"
             android:defaultValue="-1" />
     </fragment>
 

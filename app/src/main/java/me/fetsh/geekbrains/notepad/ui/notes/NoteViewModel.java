@@ -4,8 +4,11 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import java.util.ArrayList;
+
 import me.fetsh.geekbrains.notepad.ListLiveData;
 import me.fetsh.geekbrains.notepad.Note;
+import me.fetsh.geekbrains.notepad.NoteFirebaseRepo;
 
 public class NoteViewModel extends ViewModel {
     private final MutableLiveData<Note> noteToShow = new MutableLiveData<>();
@@ -14,8 +17,8 @@ public class NoteViewModel extends ViewModel {
 
     public ListLiveData<Note> getNotes() {
         if (notes == null) {
-            notes = new ListLiveData<>(null);
-            notes.populate(Note.all);
+            notes = new ListLiveData<>(new ArrayList<>());
+            NoteFirebaseRepo.getNotesAndThen(notes::populate);
         }
         return notes;
     }
@@ -36,10 +39,22 @@ public class NoteViewModel extends ViewModel {
         return noteToEdit;
     }
 
-    public Note getNote(int id) {
+    public Note getNote(String id) {
         if (getNotes().getValue() == null) return null;
-        return getNotes().getValue().getList().stream().filter(n -> n.getId() == id).findFirst().orElse(null);
+        return getNotes().getValue().getList().stream().filter(n -> n.getId().equals(id)).findFirst().orElse(null);
     }
 
+    public void saveNote(Note note) {
+        if (note.isNew()) {
+            NoteFirebaseRepo.addNoteAndThen(note, getNotes()::setOrAddItem);
+        } else {
+            NoteFirebaseRepo.updateNote(note, getNotes()::setOrAddItem);
+        }
+    }
 
+    public void deleteNote(Note note) {
+        if (note == null) return;
+        NoteFirebaseRepo.removeNoteAndThen(note, getNotes()::removeItem);
+
+    }
 }

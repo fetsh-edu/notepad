@@ -10,9 +10,9 @@ public class ListHolder<T> {
 
     private int index = -1;
     private UpdateType updateType = null;
-    private List<T> list;
+    private final List<T> list;
 
-    public ListHolder(List<T> list){
+    public ListHolder(@NonNull List<T> list){
         this.list = list;
     }
 
@@ -39,12 +39,11 @@ public class ListHolder<T> {
     }
 
     public void populate(List<T> list) {
-        this.list = list;
+        this.list.addAll(list);
         updateType = UpdateType.DATA_SET_CHANGED;
     }
 
     public @NonNull List<T> getList() {
-        if (list == null) return Collections.emptyList();
         return Collections.unmodifiableList(list);
     }
 

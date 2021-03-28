@@ -26,7 +26,6 @@ import me.fetsh.geekbrains.notepad.ui.notes.NoteViewModel;
 
 public class MainActivity extends AppCompatActivity {
 
-    private FragmentManager fragmentManager;
     private AppBarConfiguration mAppBarConfiguration;
     private NoteViewModel mNoteViewModel;
     private NavController mNavController;
@@ -37,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        fragmentManager = getSupportFragmentManager();
+        FragmentManager fragmentManager = getSupportFragmentManager();
         mNoteViewModel = new ViewModelProvider(this).get(NoteViewModel.class);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
