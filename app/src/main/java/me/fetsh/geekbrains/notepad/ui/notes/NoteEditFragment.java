@@ -1,10 +1,12 @@
 package me.fetsh.geekbrains.notepad.ui.notes;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
 import androidx.annotation.NonNull;
@@ -49,8 +51,8 @@ public class NoteEditFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         mNoteViewModel = new ViewModelProvider(requireActivity()).get(NoteViewModel.class);
-        if (getArguments() != null && getArguments().getInt(NOTE_ID) != -1) {
-            note = mNoteViewModel.getNote(getArguments().getInt(NOTE_ID));
+        if (getArguments() != null && !getArguments().getString(NOTE_ID).equals("-1")) {
+            note = mNoteViewModel.getNote(getArguments().getString(NOTE_ID));
         }
         if (note == null) {
             note = new Note("", "", LocalDateTime.now());
@@ -74,5 +76,15 @@ public class NoteEditFragment extends Fragment {
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        View view = requireActivity().getCurrentFocus();
+        if (view != null) {
+            InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(view.getWindowToken(), InputMethodManager.RESULT_UNCHANGED_SHOWN);
+        }
     }
 }
