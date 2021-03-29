@@ -60,6 +60,15 @@ public class NoteEditFragment extends Fragment {
 
         etContent = view.findViewById(R.id.fragment_note_edit_content);
         etContent.setText(note.getDescription());
+        if (etContent.requestFocus()) {
+            etContent.postDelayed(() -> {
+                getInputMethodManager()
+                        .showSoftInput(
+                                etContent,
+                                InputMethodManager.RESULT_UNCHANGED_SHOWN
+                        );
+            }, 200);
+        }
     }
 
     @Override
@@ -81,8 +90,15 @@ public class NoteEditFragment extends Fragment {
         super.onDestroyView();
         View view = requireActivity().getCurrentFocus();
         if (view != null) {
-            InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-            imm.hideSoftInputFromWindow(view.getWindowToken(), InputMethodManager.RESULT_UNCHANGED_SHOWN);
+            getInputMethodManager()
+                    .hideSoftInputFromWindow(
+                            view.getWindowToken(),
+                            InputMethodManager.RESULT_UNCHANGED_SHOWN
+                    );
         }
+    }
+
+    private InputMethodManager getInputMethodManager() {
+        return (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
     }
 }

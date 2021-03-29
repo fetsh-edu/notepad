@@ -54,6 +54,7 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder> 
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Note note = mNotes.get(position);
         holder.itemTitle.setText(note.getTitle());
+        holder.itemTitle.setVisibility(note.getTitle().isEmpty() ? View.GONE : View.VISIBLE);
         holder.itemDescription.setText(note.getDescription());
 
     }

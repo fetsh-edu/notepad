@@ -2,6 +2,7 @@ package me.fetsh.geekbrains.notepad.ui.notes;
 
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -16,6 +17,8 @@ import androidx.lifecycle.ViewModelProvider;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+import java.time.format.FormatStyle;
 
 import me.fetsh.geekbrains.notepad.Note;
 import me.fetsh.geekbrains.notepad.R;
@@ -26,6 +29,9 @@ public class NoteFragment extends Fragment {
 
     private NoteViewModel mNoteViewModel;
     private Note note;
+    private TextView noteContent;
+    private TextView noteTitle;
+    private TextView noteDate;
 
     public NoteFragment() {
         // Required empty public constructor
@@ -49,25 +55,42 @@ public class NoteFragment extends Fragment {
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         mNoteViewModel = new ViewModelProvider(requireActivity()).get(NoteViewModel.class);
+        noteContent = view.findViewById(R.id.fragment_note_content);
+        noteTitle = view.findViewById(R.id.fragment_note_title);
+        noteDate = view.findViewById(R.id.fragment_note_date);
+
+        if (mNoteViewModel.getNoteToShow().getValue() == null)
+            renderEmptyNote();
+
         mNoteViewModel.getNoteToShow().observe(getViewLifecycleOwner(), note -> {
             this.note = note;
-            TextView noteContent = view.findViewById(R.id.fragment_note_content);
-            TextView noteTitle = view.findViewById(R.id.fragment_note_title);
-            TextView noteDate = view.findViewById(R.id.fragment_note_date);
-
             if (note == null) {
-                noteContent.setText(R.string.empty_note);
-                noteDate.setText("");
-                noteTitle.setText("");
+                renderEmptyNote();
             } else {
-                noteContent.setText(note.getDescription());
-                noteTitle.setText(note.getTitle());
-                LocalDateTime dateTime =
-                        LocalDateTime.ofInstant(Instant.ofEpochMilli(note.getDateTime()),
-                                ZoneId.systemDefault());
-                noteDate.setText(dateTime.toString());
+                renderNote(note);
             }
         });
+    }
+
+    private void renderNote(Note note) {
+        noteContent.setGravity(Gravity.START);
+        noteDate.setVisibility(View.VISIBLE);
+        noteTitle.setVisibility(View.VISIBLE);
+        noteContent.setText(note.getDescription());
+        noteTitle.setText(note.getTitle());
+        noteDate.setText(
+                LocalDateTime
+                        .ofInstant(
+                                Instant.ofEpochMilli(note.getDateTime()),
+                                ZoneId.systemDefault())
+                        .format(DateTimeFormatter.ofLocalizedDateTime(FormatStyle.MEDIUM)));
+    }
+
+    private void renderEmptyNote() {
+        noteContent.setText(R.string.empty_note);
+        noteContent.setGravity(Gravity.CENTER);
+        noteDate.setVisibility(View.GONE);
+        noteTitle.setVisibility(View.GONE);
     }
 
     @Override
