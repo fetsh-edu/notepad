@@ -107,4 +107,10 @@ public class Note implements Parcelable {
                 ", dateTime=" + dateTime +
                 '}';
     }
+
+    public String getShortName() {
+        String shortName = getTitle().isEmpty() ? getDescription() : getTitle();
+        if (shortName.length() <= 50) return shortName;
+        return shortName.substring(0, 50) + "...";
+    }
 }
